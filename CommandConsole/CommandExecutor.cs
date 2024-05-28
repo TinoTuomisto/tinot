@@ -4,10 +4,11 @@ namespace TinoT.CommandConsole
     using System.Collections.Generic;
     using System.Linq;
     using UnityEngine;
+    
     public class CommandExecutor
     {
         private readonly Dictionary<string, ICommand> Commands;
-        public CommandExecutor(IEnumerable<ICommand> commands, bool isCaseSensitive = false)
+        public CommandExecutor(IEnumerable<ICommand> commands)
         {
             Commands = new Dictionary<string, ICommand>();
             
@@ -16,6 +17,7 @@ namespace TinoT.CommandConsole
                 RegisterCommand(command);
             }
         }
+        
         private void RegisterCommand(ICommand command)
         {
             if (!Commands.TryAdd(command.Identifier.Name.ToLower(), command))
@@ -23,6 +25,7 @@ namespace TinoT.CommandConsole
                 throw new InvalidCastException($"Command word already registered: {command.Identifier.Name}");
             }
         }
+        
         public void ExecuteCommand(string input)
         {
             var parts = input.Split(' ');
